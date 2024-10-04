@@ -1,5 +1,0 @@
-segunda: Algebra linear prova / trabalho de Etica
-terça: prova de IA
-quarta: prova de PLP e tlvz de TC
-quinta: prova de PE
-sexta: apresentar pygame em reunião

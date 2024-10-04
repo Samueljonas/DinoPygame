@@ -23,6 +23,31 @@ pontos = 0
 som_pts = pygame.mixer.Sound(os.path.join(diretorio_sons, "score_sound.wav"))
 som_pts.set_volume(0.1)
 velocidade_jogo = 10
+ranking = {}
+
+
+def salvar_recorde(nome, pts):
+    with open("recordes.txt", "a") as arquivo:
+        arquivo.write(f"{nome}:{pts}\n")
+
+def exibir_ranking():
+    try:
+        ranking = {}
+        with open("recordes.txt", "r") as arquivo:
+            for linha in arquivo:
+                nome, pontos = linha.strip().split(":")
+                ranking[nome] = int(pontos)  # Armazena o nome e a pontuação como um dicionário
+
+        # Ordena o dicionário por pontos em ordem decrescente
+        ranking_ordenado = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
+
+        print("\nRanking:")
+        for posicao, (nome, pontos) in enumerate(ranking_ordenado.items(), 1):  # Exibe os 10 melhores
+            print(f"{posicao}. {nome} - {pontos} pontos")
+            if posicao >= 10:  # Limita a exibição aos 10 melhores
+                break
+    except FileNotFoundError:
+        print("Nenhum recorde encontrado.")
 
 def reiniciar_jogo():
     global pontos, velocidade_jogo, colidiu, escolha_obsta
@@ -32,6 +57,9 @@ def reiniciar_jogo():
     voador.rect.x = largura
     cacto.rect.x = largura
     escolha_obsta = choice([0,1])
+    if hasattr(reiniciar_jogo, "salvo"):
+        del reiniciar_jogo.salvo  # Remove o atributo salvo para o próximo jogo
+
 
 
 def exibe_msg(msg, tam, cor):
@@ -237,11 +265,19 @@ while True:
     if colidiu == True:
         if pontos % 100 == 0:
             pontos += 1 
-        
+
         over = exibe_msg("GAME OVER", 40, (0,0,0))
         tela.blit(over, (largura/2, altura/2))
         restart = exibe_msg('Pressione R para reiniciar', 20, (0,0,0))
         tela.blit(restart, (largura/2, (altura/2) + 60))
+
+        # Solicitar nome do usuário ao final do jogo
+        if not hasattr(reiniciar_jogo, "salvo"):
+            nome = input("Digite seu nome: ")
+            salvar_recorde(nome, pontos)
+            exibir_ranking()
+            reiniciar_jogo.salvo = True  # Impede que salve múltiplas vezes
+
 
     else:
         pontos += 1
@@ -257,8 +293,4 @@ while True:
     
     tela.blit(texto_pts, (520,30))
     pygame.display.flip()
-
-
- 
-
 
