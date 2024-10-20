@@ -33,7 +33,7 @@ def salvar_recorde(nome, pts):
 def exibir_ranking():
     try:
         ranking = {}
-        with open("recordes.txt", "r") as arquivo:
+        with  open("recordes.txt", "r") as arquivo:
             for linha in arquivo:
                 nome, pontos = linha.strip().split(":")
                 ranking[nome] = int(pontos)  # Armazena o nome e a pontuação como um dicionário
@@ -83,11 +83,11 @@ class Dino(pygame.sprite.Sprite):
         self.som_pulo.set_volume(0.1)
         self.imagens_dinossauro = []
         for i in range(3):
-            img = sprite_sheet.subsurface(( i * 32 ,0), (32,32))
-            img = pygame.transform.scale(img, (32*3, 32*3))
+            img = sprite_sheet.subsurface(( i * 32 ,0), (32,32))        #subsurface pega parte de uma imagem maior
+            img = pygame.transform.scale(img, (32*3, 32*3))             #redimensiona o tamanho da imagem recortada
             self.imagens_dinossauro.append(img)
         
-        self.index_lista= 0
+        self.index_lista = 0
         self.image = self.imagens_dinossauro[self.index_lista]
         self.rect = self.image.get_rect()
         self.pos_y_inicial = altura -64 -96 / 2
@@ -197,8 +197,11 @@ class Voador(pygame.sprite.Sprite):
             self.image = self.imagens_dinovoador[int(self.index_lista)]
 
 
+
 todas_as_sprites = pygame.sprite.Group()
 
+
+#           instanciando obj Dino
 dino = Dino()
 todas_as_sprites.add(dino)
 
@@ -293,4 +296,3 @@ while True:
     
     tela.blit(texto_pts, (520,30))
     pygame.display.flip()
-

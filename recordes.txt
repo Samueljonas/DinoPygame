@@ -1,7 +1,6 @@
-tentativa 1:64
-tentativa 2:314
-tentativa 3:190
-tentativa 4:55
-tentativa 5:54
-tentativa 1 milhao:129
-num sei:55
+samuel:60
+samuel:56
+jonas:1103
+teste:194
+teste2:193
+.:255
